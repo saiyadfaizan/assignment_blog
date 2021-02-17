@@ -1,0 +1,6 @@
+username,email,total_followers,total_post,total_likes
+user1,user1@bestpeers.com,2,1,0
+user2,user2@bestpeers.com,3,1,0
+user3,user3@bestpeers.com,0,0,0
+admin,admin@bestpeers.com,2,1,0
+user4,user4@bestpeers.com,0,2,2

@@ -1,0 +1,94 @@
+{% extends 'network/layout.html' %}
+{% load static %}
+{% block content %}
+
+<center>
+  <h3>Profile</h3>
+  <table class="table">
+    <tr><img class="row-image" src="http://127.0.0.1:8000/static/{{request.user.profile.image.url}}"></tr><br>
+    <tr>Username: <strong>{{user.username}}</strong></tr>
+    <br />
+    <tr>Name: <strong>{{user.first_name}} {{user.last_name}}</strong></tr>
+    <br />
+    <tr>Email: <strong>{{user.email}}</strong></tr>
+    <br />
+    <tr>Followers: {{request.user.profile.total_followers}}</tr> <br>
+    <tr>Download CSV: <a href="{% url 'MailCSV' %}">Click here</a></tr>
+
+    <br>
+  </table>
+  <hr>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <h3>My posts</h3>
+
+
+      <div class="center rounded-lg">
+
+        {% for post in posts %}
+        <div class="item-row">
+          <div class="my-2">
+            <strong>{{post.content}}</strong> <br>
+            <i>posted by: {{post.author}} </i><br>
+            <i>posted on: {{post.date_posted}}</i>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+
+
+    <div class="col-lg-6">
+  
+        <h3>People</h3>
+        {% for user in users %}
+
+          {% if request.user != user %}
+          {{user.username}}
+          <a class="btn btn-info btn-sm" href="{% url 'profile_detail' user.profile.id %}">View Profile</a>
+          {% if request.user in user.profile.following.all %}
+          <button class=" follow btn btn-success ml-5 d-inline " data="{{user.profile.id}}"><span
+              id="is_following{{user.profile.id}}">following</span></button>
+          <br><br>{% else %}
+          <button class=" follow btn btn-success ml-5 d-inline" data='{{user.profile.id}}'><span
+              id="is_following{{user.profile.id}}">follow</span></button>
+          <br><br>{% endif %}
+          {% endif %}
+        {% endfor%}
+
+    </div>
+
+  </div>
+</center>
+
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('.follow').click(function (event) {
+      event.preventDefault();
+      var profile_id = $(this).attr('data')
+      $.ajax({
+        type: 'GET',
+        url: "/follow/",
+        data: {
+          'profile_id': profile_id
+        },
+        success: function (data) {
+          if (data['following'] == true) {
+
+            $('#is_following' + profile_id).text('following');
+          }
+          else {
+            $('#is_following' + profile_id).text('follow');
+          }
+        }
+      });
+    });
+  });
+</script>
+
+
+
+{% endblock content %}

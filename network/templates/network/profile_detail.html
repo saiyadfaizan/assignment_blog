@@ -1,0 +1,41 @@
+{% extends 'network/layout.html' %}
+{% load static %}
+{% block content %}
+<center>
+    <h3>Profile</h3>
+    <table class="table">
+        <tr><img class="row-image" src="http://127.0.0.1:8000/static/{{request.user.profile.image.url}}"></tr><br>
+        <tr>Username: <strong>{{profile.author.username}}</strong></tr>
+        <br />
+        <tr>Name: <strong>{{profile.author.first_name}} {{profile.author.last_name}}</strong></tr>
+        <br />
+        <tr>Email: <strong>{{profile.author.email}}</strong></tr>
+        <br />
+        <tr>Following: {{profile.total_followers}}</tr>
+
+        <br>
+    </table>
+    <hr>
+
+
+    <h3>Posts</h3>
+    <div class="center rounded-lg">
+        <div class="table">
+            {% if posts %}
+            {% for post in posts %}
+            <div class="item-row">
+                <div class="my-2">
+                    <strong>{{post.content}}</strong> <br>
+                    <i>posted by: {{post.author}}</i> <br>
+                    <i>posted on: {{post.date_posted}}</i>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h5>No posts yet!</h5>
+            {% endif %}
+        </div>
+
+</center>
+
+{% endblock content %}

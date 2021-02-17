@@ -1,0 +1,38 @@
+{% extends 'network/layout.html' %}
+{% block content %}
+<center>
+    <h1>Following</h1>
+    <div class="center rounded-lg">
+        <hr>
+        {% if posts %}
+        <div class="table">
+            {% for post in posts %}
+            <div class="item-row">
+                <div class="my-2">
+                    <h4><strong>{{post.content}}</strong> <br></h4>
+                    <i>posted by: {{post.author}}</i> <br>
+                    <i>posted on: {{post.date_posted}}</i> <br>
+                    {% if request.user in post.liked.all %}
+                    <a href="#" id="change{{post.id}}" class="like_button text-primary" data="{{ post.id }}"><i
+                            class="fa fa-heart fa-lg"></i></a><span
+                        id="post_id{{post.id}}">{{ post.total_likes }} </span>
+                    {% else %}
+                    <a href="#" id="change{{post.id}}" class="like_button text-secondary" data="{{ post.id }}"><i
+                            class="fa fa-heart fa-lg"></i></a><span id="post_id{{post.id}}"
+                        class="text-secondary">{{ post.total_likes }} </span>
+
+                    {% endif %}
+                    <hr>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else%}
+        <h3><p>You dont follow anyone! <br> Follow your friends for viewing latest posts.</p></h3>
+        {% endif %}
+    </div>
+</center>
+
+
+
+{% endblock content %}

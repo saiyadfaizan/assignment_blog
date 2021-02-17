@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>SocialApp</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+</head>
+<body>
+    <h1>Register Here</h1>
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        {{ form1.as_p}}
+        <input type="submit" value="register">
+    </form>
+    <a class="btn btn-outline-success btn-block btn-sm" href="{% url 'login' %}">Already have an account ?</a>
+</body>
+</html>

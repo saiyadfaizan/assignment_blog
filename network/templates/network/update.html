@@ -1,0 +1,12 @@
+{% extends 'network/layout.html' %}
+{% block content %}
+<div class="center">
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" name="Update" class="btn btn-success">
+    </form>
+
+</div>
+{% endblock content %}

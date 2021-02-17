@@ -1,0 +1,26 @@
+{% extends 'network/layout.html' %}
+{% block content %}
+<center>
+    <h1>My Posts</h1>
+    <div class="center rounded-lg">
+        <hr>
+
+        <div class="table">
+            {% for post in posts %}
+            <div class="item-row">
+                <div class="my-2">
+                    <h4><strong>{{post.content}}</strong> <br></h4>
+                    <i>posted by: {{post.author}}</i> <br>
+                    <i>posted on: {{post.date_posted}}</i> <br>
+
+                    <a href="{% url 'update' post.id %}" class="btn btn-info btn-sm">Edit</a>
+                    <a href="{% url 'delete' post.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    <br>
+                    <hr>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</center>
+{% endblock content %}

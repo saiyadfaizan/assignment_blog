@@ -1,0 +1,103 @@
+{% extends 'network/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<center>
+    <h1>All Posts</h1>
+
+    <div class="center rounded-lg">
+
+        <form method="POST" action="">
+            {% csrf_token  %}
+            {{form.content}}
+            <input class="btn btn-success" type="submit" value="Post">
+        </form>
+        <hr>
+
+        <div class="table">
+            {% for post in posts %}
+            <div class="item-row">
+                <div class="my-2">
+                    <h4><strong>{{post.content}}</strong> <br></h4>
+                    <h6><i>posted by: {{post.author}}</i></h6>
+                    <h6><i>posted on: {{post.date_posted}} </i></h6>
+
+                    {% if request.user in post.liked.all %}
+                    <a href="#" id="change{{post.id}}" class="like_button text-primary" data="{{ post.id }}"><i
+                            class="fa fa-heart fa-lg"></i></a><span class=""
+                        id="post_id{{post.id}}">{{ post.total_likes }} </span>
+                    {% else %}
+                    <a href="#" id="change{{post.id}}" class="like_button text-secondary" data="{{ post.id }}"><i
+                            class="fa fa-heart fa-lg"></i></a><span id="post_id{{post.id}}"
+                        class="text-secondary">{{ post.total_likes }} </span>
+
+                    {% endif %}
+                </div>
+            </div>
+            <hr>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        {% if posts.has_other_pages %}
+        <ul class="pagination">
+            {% if posts.has_previous %}
+            <li><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+            <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in posts.paginator.page_range %}
+            {% if posts.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+            <li><a href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if posts.has_next %}
+            <li><a href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+            {% else %}
+            <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+    </div>
+</center>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('.like_button').click(function (event) {
+            event.preventDefault();
+            var post_id = $(this).attr('data');
+            
+            $.ajax(
+                {
+                    type: "GET",
+                    url: "/like/",
+                    data: {
+                        'post_id': post_id
+                    },
+                    success: function (data) {
+                        if (data['is_liked'] == true) {
+                            $('#change' + post_id).removeClass('text-secondary');
+                            $('#change' + post_id).addClass('text-primary');
+                        }
+                        else {
+                            $('#change' + post_id).removeClass('text-primary');
+                            $('#change' + post_id).addClass('text-secondary');
+                        }
+
+
+                        $('#post_id' + post_id).text(data['total_likes']);
+
+                    }
+                });
+        });
+
+    });
+
+</script>
+
+{% endblock content %}
